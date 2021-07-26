@@ -2,21 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductsBySlug } from "../../../actions";
 import { generatePublicUrl } from "../../../urlConfig";
+import { Link } from "react-router-dom";
 
 const ProductStore = (props) => {
-    const product = useSelector((state) => state.product);
-    const [priceRange, setPriceRange] = useState({
-        under5k: 5000,
-        under10k: 10000,
-        under15k: 15000,
-        under20k: 20000,
-        under30k: 30000,
-    })
-    const dispatch = useDispatch();
-    useEffect(() => {
-      const { match } = props;
-      dispatch(getProductsBySlug(match.params.slug));
-    }, []);
+  const product = useSelector((state) => state.product);
+  const [priceRange, setPriceRange] = useState({
+    under5k: 5000,
+    under10k: 10000,
+    under15k: 15000,
+    under20k: 20000,
+    under30k: 30000,
+  });
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const { match } = props;
+    dispatch(getProductsBySlug(match.params.slug));
+  }, []);
   return (
     <>
       {Object.keys(product.productsByPrice).map((key, index) => {
@@ -30,7 +31,7 @@ const ProductStore = (props) => {
             </div>
             <div style={{ display: "flex" }}>
               {product.productsByPrice[key].map((product) => (
-                <div className="productContainer">
+                <Link to={`/${product.slug}/${product._id}/p`} style={{ display: "block"}}className="productContainer">
                   <div className="productImgContainer">
                     <img
                       src={generatePublicUrl(product.productPicture[0].img)}
@@ -45,7 +46,7 @@ const ProductStore = (props) => {
                     </div>
                     <div className="productPrice">{product.price}</div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
